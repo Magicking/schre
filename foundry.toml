@@ -1,0 +1,6 @@
+[default]
+src = 'contracts/solidity/src'
+out = 'out'
+libs = ['contracts/solidity/src/lib']
+
+# See more config options https://github.com/gakonst/foundry/tree/master/config
