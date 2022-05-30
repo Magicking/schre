@@ -1,15 +1,13 @@
 import adapter from '@sveltejs/adapter-auto';
-import polyfillNode from 'rollup-plugin-polyfill-node';
+import preprocess from 'svelte-preprocess';
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
+
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	// Consult https://github.com/sveltejs/svelte-preprocess
 	// for more information about preprocessors
-	plugins: [polyfillNode()],
-
-	optimizeDeps: {
-		exclude: ['dragula']
-	},
+	preprocess: preprocess(),
 	kit: {
 		adapter: adapter(),
 
@@ -23,7 +21,6 @@ const config = {
 			lib: 'svelte/src/lib',
 			routes: 'svelte/src/routes',
 			params: 'svelte/src/params',
-			routes: 'svelte/src/routes',
 			serviceWorker: 'svelte/src/service-worker',
 			template: 'svelte/src/app.html'
 		},
@@ -31,13 +28,36 @@ const config = {
 			assets: '',
 			base: ''
 	    },
-    vite: {
-        server: {
-            fs: {
-                allow: ['..']
-            }
-        }
-    }
+		vite: {
+			server: {
+				fs: {
+					allow: ['..']
+				}
+			},
+			optimizeDeps: {
+				esbuildOptions: {
+					// Node.js global to browser globalThis
+					define: {
+						global: 'globalThis'
+					},
+					// Enable esbuild polyfill plugins
+					plugins: [
+						NodeGlobalsPolyfillPlugin({
+							buffer: true,
+							global: true,
+							process: true,
+							url: true,
+							assert: true,
+							crypto: true,
+							http: true,
+							https: true,
+							os: true,
+							stream: true
+						})
+					]
+				}
+			},
+		}
 	},
 };
 
