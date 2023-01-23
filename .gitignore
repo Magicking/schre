@@ -17,7 +17,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -143,3 +142,6 @@ node_modules/
 artifacts
 *.deployments.txt
 node.json
+
+issue.md
+.svelte-kit
