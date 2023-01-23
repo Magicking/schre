@@ -17,40 +17,9 @@
 	let type;
 	let pending = false;
 
-	const enable = async () => {
-		pending = true;
-		/*
-		const providerOptions = {
-			walletconnect: {
-				package: WalletConnectProvider,
-				options: {
-					rpc: {
-						100: 'https://dai.poa.network'
-					}
-				}
-			}
-		};
-		const web3Modal = new Web3Modal({
-			providerOptions
-		});
-		const provider = await web3Modal.connect();*/
-		let WalletConnectProvider = window.WalletConnectProvider.default
-		const provider = new WalletConnectProvider({
-			rpc: {
-				1: "https://eth-mainnet.alchemyapi.io/v2/8UxYGtbZkkBdBL5AoED8Go6ZhJP_LC3W",
-				5: "https://eth-goerli.alchemyapi.io/v2/kCzNVIXfuNMeTJUE66sxadw_bme0pPi0",
-				137: "https://polygon-mainnet.g.alchemy.com/v2/As4Z0QB1e5xwpNozc-0RCwmJbovBQI7p"
-			}
-		})
-		//  Enable session (triggers QR Code modal)
-		await provider.enable();
-		defaultEvmStores.setProvider(provider);
-		pending = false;
-	};
-
 	const disconnect = async () => {
-    	await defaultEvmStores.disconnect();
-    	pending = false;
+		if ($connected)
+    		await defaultEvmStores.disconnect();
   	}
 
 	$: network = $connected ? $provider.getNetwork() : '';
@@ -64,7 +33,6 @@
 
 <section>
 	<Counter />
-	<button class="button" disabled={pending} on:click={enable}>Connect with Web3modal</button>
 	{#if pending}connecting...{/if}
 
 

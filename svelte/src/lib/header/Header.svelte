@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import WalletOptions from '$lib/WalletOptions.svelte';
 </script>
 
 <header>
-	<div class="corner">Connect</div>
+	<div class="corner">
+		<WalletOptions />
+	</div>
 
 	<nav>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
